@@ -1,4 +1,4 @@
-Boot & Logon Autostart Execution: T1547
+. Boot & Logon Autostart Execution: T1547
 
 Registry (upload payload to path and use registry)
 - HKCU\Software\Microsoft\Windows\CurrentVersion\Run <- Runs always
