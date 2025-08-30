@@ -1,0 +1,30 @@
+Kerberos replaced NTLM as the default domain authentication since windows 2000 server
+
+Principals = (users and computers)
+KDC (Key distribution Center)
+- Database of all principals and their associated secrets (password hashes)
+- AS = Authentication Server
+- TGS = Ticket Granting Server
+
+In Windows the DC is the KDC and the password hashes are stored in AD.
+
+TGT = Ticket Granting Ticket is a principal afterit has been verified by the AS. Think SSO.
+Service = a resource that the principal can access (smb, mysql, etc)
+
+PAC= Privileged Attribute Certificate
+
+Delegation in windows: way for a service that uses another backend service to authenticate the principal for access.
+
+Unconstrained Delegation.
+- first but most dangerous
+- Enabled by setting the TRUSTED_FOR_DELEGATION on the UserAccountControl Attribute of the computer object
+
+Rubeus:
+execute-assembly C:\Tools\Rubeus\Rubeus\bin\Release\Rubeus.exe monitor /nowrap <-- Monitor
+
+
+In beacon use command: ldapsearch (&(samAccountType=805306369)(userAccountControl:1.2.840.113556.1.4.803:=524288)) --attributes samaccountname
+to find computersconfigured for unconstraind delegation.
+
+Constrained Delegation.
+Role-Based Constrained Delegation.
