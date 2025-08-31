@@ -1,1 +1,74 @@
+Logon sessions Hold
+- unique logon identifier (luid)
+- username & Security Identifier (SID)
+- Authentication package to auththe user
+- logon time
+- logon server (ex. DC) used
+- DNS domain name & User Principal Name (UPN)
+
+When logon session created the auth package passess information to the Local Security Authority (LSA)  which is used to create the access token for the user.
+
+Access Tokens contains:
+
+contains security information associated with the logon session (user)
+- Unique token id
+- ID of the parent Logon Session (labelled Authentication ID)
+- Token type (primary or impersonation)
+- User SID
+- SIDs of any domain groups the user is a member of
+- list of privs the user has (ex user right assignment)
+- Token intergrity level (low, med, high, system)
+
+Every process that starts with a logon will recieve a primary token and all actions performed will be under that idenity of the user
+
+TOKEN Impersonation (Does not need HIGH integrity)
+
+if a adversary knows the victims plaintext credentialsor if they can be stolen from a process. A adversary can create a new token.
+
+- APIS
+-- LogonUserA
+-- ImpersonateLoggedOnUser
+
+In Beacon we use make_token command
+beacon> make_token domain_name\victim Passw0rd!
+[+] Impersonated Domain_name\victim (netonly) <-- Netonly does have limitations (learned in specterops class): will work only on network not local. .
+
+Steal Token (requires high -integrity session)
+adversary steal primary token from a process running as a different user
+
+- APIS
+-- OpenProcess
+-- OpenProcessToken
+-- DuplicateToken
+-- ImpersonateLoggedOnUser
+
+In Beacon we can use steal_token
+- Identify target with ps command
+- steal_token 5248 <-- process ID
+
+RevertToSelf
+
+instructs beacon to stop impersonating
+
+- APIS
+-- ReverToSelf
+Beacon rev2self
+
+Token Store
+
+to avoid loosing a token if a process is stopped can use token-store
+- token-store steal PID will steal teh token and it to the store
+- token-store show shows what is stored 
+- token-store use # to use a token
+- token-store delete to remove a token from store
+
+Pass The Hash (PTH)
+
+allows adversary to leverage NTLM hash to impersonate a user. However NTLM is dieing and is more likely not found.
+
+Beacon pth donain\user hash 
+- wrapper for sekurlsa::pth
+
+
+
 
