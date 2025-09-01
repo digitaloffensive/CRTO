@@ -1,0 +1,68 @@
+Bloodhound <-- I miss the enterprise version :(
+- sharphound
+- pythonhound.py
+These can help but will get you caught by any mature orgs.
+
+Solution is to run tools like :
+- ldapsearch
+- pyldapsearch
+- bofhound
+
+The outputcan then be importedf into bloodhound CE
+
+LDAP (lightweight directory access protocol
+Requires a client to connect to the server (usally a dc)
+- LDAP: 389 port
+- LDAPS: 636 port
+
+To make queiries 
+Each obect has a objectclass which defines the type of attributes it can have
+Most common classes
+- computer Represents a computer account in the domain.
+- Domain: Contains information about a domain 
+- Group: Stores a list of user names, used to apply security principals to resources.
+- Person: Contains information about a user.
+- GroupPolicyContainer: A container for storing Group Policy Objects.
+- OrganizationalUnit: A container for storing users, computers, and other account objects.
+- TrustedDomain: An object that represents a domain trust relationship.
+
+Querying LDAP
+- Indexes
+- Filters 
+--  sAMAccountType: https://learn.microsoft.com/en-us/windows/win32/adschema/a-samaccounttype
+--- Beacon:> ldapsearch (samAccountType=805306368) <-- 805306368 = SAM_NORMAL_USER_ACCOUNT 0x30000000  (0x30000000 = decimal: 805306368)
+Queries can have AND (&) or OR (|) and not (!) filters (filters appear at begining)
+- AND =  Beacon:>ldapsearch (&(samAccountType=805306368)(adminCount=1)) <-- returns sam_normal_user_account and admin count =1
+- AND or Or = Beacon:>ldapsearch (&(samAccountType=805306368)(|(description=*admin*)(samaccountname=*adm*))) <-- admin accounts
+- AND or OR and ! = beacon> ldapsearch (&(samAccountType=805306368)(adminCount=1)(!(name=krbtgt))) <-- dont return krbtgt
+
+Attributes
+Use the --attributes parameter in ldapsearch to control which attributes to return.  For example, if we only wanted the name and group memberships, we could do:
+- beacon> ldapsearch (&(samAccountType=805306368)(adminCount=1)) --attributes name,memberof
+
+The ldapsearch BOF also allows you to read the security descriptor (i.e ACL) of an object by appending ntsecuritydescriptor to the list of attributes.  
+It's output as a long base64 string that BOFHound can parse and decode.
+
+To return every attribute and the security descriptor, use *,ntsecuritydescriptor. <-- ntsecuritydescriptor is a must for acl path based attacks
+
+Bitwise Filters
+In addition to simple and's, or's, and not's, LDAP supports the use of bitwise operators by way of the following OIDs (object identifiers):
+1.2.840.113556.1.4.803 for LDAP_MATCHING_RULE_BIT_AND.
+1.2.840.113556.1.4.804 for LDAP_MATCHING_RULE_BIT_OR.
+1.2.840.113556.1.4.1941 for LDAP_MATCHING_RULE_IN_CHAIN.
+
+OPSEC LAB
+
+Enumerate the domain for users, groups, OU, GPO's
+
+ldapsearch (|(objectClass=domain)(objectClass=organizationalUnit)(objectClass=groupPolicyContainer)) --attributes *,ntsecuritydescriptor
+ldapsearch (|(samAccountType=805306368)(samAccountType=805306369)(samAccountType=268435456)) --attributes *,ntsecuritydescriptor
+
+copy logs to local host
+FROM WSL /ubuntu TERMINAL
+cd /mnt/c/Users/Attacker/Desktop
+scp -r attacker@10.0.0.5:/opt/cobaltstrike/logs . <-- scp logs 
+bofhound -i logs
+
+
+
